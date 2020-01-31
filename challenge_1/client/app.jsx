@@ -7,9 +7,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      searchTerm: '',
       currentPage: 1, // default page to 1
     };
     this.onPageChange = this.onPageChange.bind(this);
+    this.onSearchTermChange = this.onSearchTermChange.bind(this);
   }
 
   onPageChange(page) {
@@ -19,12 +21,19 @@ class App extends Component {
     });
   }
 
+  onSearchTermChange(e) {
+    this.setState({
+      searchTerm: e.target.value,
+    });
+  }
   // TODO use the Server.search method to get results
 
 
   render() {
     // our server is imported as props in the index file
     const { Server } = this.props;
+    const { searchTerm } = this.state;
+    console.log(searchTerm);
     return (
       <div>
         <Layout>
@@ -36,7 +45,11 @@ class App extends Component {
               <Col xs={0} sm={2} md={8} lg={8} xl={10}>
               </Col>
               <Col xs={24} sm={12} md={8} lg={8} xl={8}>
-                <Search placeholder="input key word" onSearch={value => console.log(value)} />
+                <Search
+                  placeholder="input key word"
+                  onChange={this.onSearchTermChange}
+                  onSearch={value => console.log(value)}
+                />
               </Col>
             </Row>
           </Header>
