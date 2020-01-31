@@ -12,6 +12,7 @@ class App extends Component {
     };
     this.onPageChange = this.onPageChange.bind(this);
     this.onSearchTermChange = this.onSearchTermChange.bind(this);
+    this.onSearch = this.onSearch.bind(this);
   }
 
   onPageChange(page) {
@@ -26,14 +27,16 @@ class App extends Component {
       searchTerm: e.target.value,
     });
   }
-  // TODO use the Server.search method to get results
+
+  onSearch(term) {
+    // our server is imported as props in the index file
+    const { server } = this.props;
+    // on a new search we reset the search to page 1
+    server.search(term, 1)
+  }
 
 
   render() {
-    // our server is imported as props in the index file
-    const { Server } = this.props;
-    const { searchTerm } = this.state;
-    console.log(searchTerm);
     return (
       <div>
         <Layout>
@@ -46,9 +49,10 @@ class App extends Component {
               </Col>
               <Col xs={24} sm={12} md={8} lg={8} xl={8}>
                 <Search
-                  placeholder="input key word"
+                  placeholder="enter a key word"
                   onChange={this.onSearchTermChange}
-                  onSearch={value => console.log(value)}
+                  // this property allows us to send the input search term with either the icon click or enter
+                  onSearch={searchTerm => this.onSearch(searchTerm)}
                 />
               </Col>
             </Row>
