@@ -21,9 +21,7 @@ const Server = {
     const queryString = `?${searchString}&${pageString}&_limit=20`;
     const searchURL = `${Server.address}${queryString}`;
     return fetch(searchURL)
-      .then(result => {
-        console.log(result);
-      })
+      .then(result => result.json())
       // TO DO figure out a better way to deal with errors
       .catch(err => console.log(err));
   }
