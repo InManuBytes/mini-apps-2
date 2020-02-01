@@ -1,12 +1,25 @@
 import React from 'react';
-import { Timeline } from 'antd';
+import { Timeline, Icon, Typography } from 'antd';
+const { Text } = Typography;
+import utils from './utils';
 
 const EventsTimeline = ({ events }) => {
   return (
     <Timeline mode="alternate">
       {
-        events.map(event => {
-          return <Timeline.Item>{event.description} 2015-09-01</Timeline.Item>
+        events.map((event, index) => {
+          const date = utils.formatDate(event.date);
+          return (
+            <Timeline.Item key={index}>
+              <Icon type="calendar" theme="twoTone" />
+              <Text style={{ color: 'rgb(24, 144, 255)' }}>
+                {` ${date}`}
+              </Text>
+              <br />
+              {/* TODO format citations */}
+              {event.description}
+            </Timeline.Item>
+          );
         })
       }
     </Timeline>
