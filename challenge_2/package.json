@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:start": "nodemon server.js",
+    "dev:start": "nodemon ./server/index.js",
     "dev:build": "webpack -d --watch",
-    "start": "node server.js"
+    "start": "node ./server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -36,7 +36,10 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5"
   }
 }
