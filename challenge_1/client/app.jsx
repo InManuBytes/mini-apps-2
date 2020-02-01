@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+
+// custom components
+import EventsTimeline from './timeline';
+// components from antd
 import { Input, Pagination, Layout, Row, Col, Divider } from 'antd';
 const { Header, Content, Footer } = Layout;
 const { Search } = Input;
@@ -9,6 +13,7 @@ class App extends Component {
     this.state = {
       searchTerm: '',
       currentPage: 1, // default page to 1
+      events: [],
     };
     this.onPageChange = this.onPageChange.bind(this);
     this.onSearchTermChange = this.onSearchTermChange.bind(this);
@@ -32,11 +37,17 @@ class App extends Component {
     // our server is imported as props in the index file
     const { server } = this.props;
     // on a new search we reset the search to page 1
-    server.search(term, 1)
+    return server.search(term, 1)
+      .then(result => {
+        this.setState({ events: result });
+      })
+      .catch(err => console.log(err));
   }
 
+  // QUESTION: on mount, should it just display all events?
 
   render() {
+    const { events } = this.state;
     return (
       <div>
         <Layout>
@@ -61,7 +72,7 @@ class App extends Component {
             {/* TO DO connect search input to state and to url */}
             {/* TO DO when there is nothing being searched pagination should not appear, maybe display a message? */}
             <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
-              Content
+              <EventsTimeline events={events} />
             </div>
             <div style={{ background: '#fff', padding: 24}} >
               <Divider />
