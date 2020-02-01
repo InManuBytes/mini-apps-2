@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // custom components
 import EventsTimeline from './timeline';
 // components from antd
-import { Input, Pagination, Layout, Row, Col, Divider, Empty, PageHeader, Statistic } from 'antd';
+import { Input, Pagination, Layout, Row, Col, Divider, Empty, Affix, Statistic, Button } from 'antd';
 const { Header, Content, Footer } = Layout;
 const { Search } = Input;
 
@@ -12,9 +12,10 @@ class App extends Component {
     super(props);
     this.state = {
       searchTerm: '',
-      // currentPage: 1, // default page to 1
       total: 0,
       events: [],
+      currentPage: 1,
+      bottom: 0,
     };
     this.onPageChange = this.onPageChange.bind(this);
     this.onSearchTermChange = this.onSearchTermChange.bind(this);
@@ -57,10 +58,11 @@ class App extends Component {
   // QUESTION: on mount, should it just display all events?
 
   render() {
-    const { events, searchTerm, total } = this.state;
+    const { events, searchTerm, total, currentPage } = this.state;
     return (
-      <div>
+      <div className="scrollable-container" ref={node => {this.container = node;}}>
         <Layout>
+          {/* move the header to the layout */}
           <Header style={{ color: 'white', position: 'fixed', zIndex: 1, width: '100%' }}>
             <Row>
               <Col xs={0} sm={10} md={8} lg={8} xl={6}>
@@ -90,15 +92,14 @@ class App extends Component {
             </div>
             <div style={{ background: '#fff', padding: 24}} >
               <Divider />
-              {/* fix pagination select page 1 */}
-              <Pagination
-                size="small"
-                current={this.state.currentPage}
-                onChange={this.onPageChange}
-                total={total}
-                showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} events`}
-                pageSize={20}
-              />
+              {(events.length > 1) ?
+                <Pagination
+                  size="small"
+                  onChange={this.onPageChange}
+                  total={total}
+                  showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} events`}
+                  pageSize={20}
+                /> : ''}
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Manu ©2020</Footer>
