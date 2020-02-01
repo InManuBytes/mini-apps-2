@@ -13,7 +13,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, './public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // https://api.coindesk.com/v1/bpi/currentprice.json
 // https://api.coindesk.com/v1/bpi/historical/close.json?start=2013-09-01&end=2013-09-05
@@ -25,7 +25,7 @@ app.get('/prices', function (req, res) {
   // for now start and end dates are hard-coded
   return getHistoricalPriceData()
     .then(prices => {
-      res.status(200).json({ prices })
+      res.status(200).json(prices)
     })
     .catch(err => res.status(400).json({ message: err }))
 });
