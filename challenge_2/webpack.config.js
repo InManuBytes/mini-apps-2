@@ -11,13 +11,23 @@ module.exports = {
           loader: "babel-loader"
         }
       },
-      {
-        test: /\.css/,
+       {
+        test: /\.css$/,
         use: [
           { loader: "style-loader" },
           { loader: "css-loader" },
-        ]
-      }
+          {
+            loader: "postcss-loader",
+            options: {
+              ident: 'postcss',
+              plugins: [
+                require('tailwindcss'),
+                require('autoprefixer'),
+              ],
+            }
+          },
+          ],
+      },
     ]
   },
   output: {
