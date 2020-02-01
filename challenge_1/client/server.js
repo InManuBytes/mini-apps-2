@@ -1,5 +1,5 @@
 const Server = {
-  address: 'http://localhost:3000/events/',
+  address: 'http://localhost:3000/events',
   // server-side pagination: GET /endpoint?_page=7 and
   // full-text search GET /endpoint?q=SEARCH_TERM
   // so we should be able to do GET /events?q=SEARCH_TERM&_page=PAGE_NUMBER&_limit=PER_PAGE_RESULTS
@@ -19,9 +19,19 @@ const Server = {
     const searchString = Server.fullTextSearch(searchTerm);
     // TO DO create a more dynamically built query-string that goes through the arguments?
     const queryString = `?${searchString}&${pageString}&_limit=20`;
-    const searchURL = `${Server.address}${queryString}`;
-    return fetch(searchURL)
-      .then(result => result.json())
+    const searchURLTotal = `${Server.address}?${searchString}`;
+    const searchURLPage = `${Server.address}${queryString}`;
+    var total;
+    return fetch(searchURLTotal)
+      .then(result =>  result.json())
+      .then(totalEvents => {
+        total = totalEvents.length;
+        return fetch(searchURLPage)
+          .then(result => result.json())
+          .then(events => {
+            return { total, events };
+          })
+      })
       // TO DO figure out a better way to deal with errors
       .catch(err => console.log(err));
   }
