@@ -4,25 +4,23 @@ class Selector extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
     }
   }
   render() {
-    const {options} = this.props;
+    const {options, ball, select} = this.props;
     return (
-      <tr>
-        <th>Knocked</th>
-        <td>
+      <td>
+        <span className="tag is-rounded">Ball {ball}</span>
+        {select ?
           <div className="select">
             <select>
               {options.map(option => {
                 return <option key={option}>{option}</option>
               })}
             </select>
-          </div>
-        </td>
-        <td></td>
-      </tr>
+          </div> : null
+        }
+      </td>
     );
   }
 }
