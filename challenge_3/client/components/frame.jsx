@@ -15,19 +15,30 @@ class Frame extends Component {
     this.state = {
       selector: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       pinsLeft: 10,
-      strike: "X",
-      spare: "/",
+      score: [null, null],
     };
     this.showScore = this.showScore.bind(this);
   }
 
-  showScore() {
-
+  showScore(selected) {
+    const {pinsLeft, score} = this.state;
+    pinsLeft =- selected;
+    const {ball} = this.props;
+    const rules = {
+      strike: "X",
+      spare: "/",
+    }
+    if (pinsLeft === 0 && ball === 1) {
+      score[0] = rules[strike];
+    } else if (pinsLeft === 0) {
+      score[1] = rules[spare];
+    }
+    this.setState({ pinsLeft, score })
   }
 
   render() {
-    const {ball, showSelector, score, total, current} = this.props;
-    const {selector, pinsLeft} = this.state;
+    const {ball, showSelector, total, current} = this.props;
+    const {selector, pinsLeft, score} = this.state;
     const options = selector.slice(0, pinsLeft);
     return (
       <div className="table-container">
@@ -46,12 +57,12 @@ class Frame extends Component {
             </tr>
             <tr>
               <th></th>
-              <td>{this.showScore(score[0])}</td>
-              <td>{this.showScore(score[1])}</td>
+              <td>{score[0]}</td>
+              <td>{score[1]}</td>
             </tr>
             {/* Input score */}
             {/* We need to render this dynamically so that the drop down appears where it needs to be */}
-            {(showSelector) ? <Selector options={options} /> : null}
+            {(showSelector) ? <Selector options={options} select={this.showScore} /> : null}
             <tr>
               <td>{total}</td>
             </tr>
