@@ -8,20 +8,20 @@ class Frame extends Component {
   /**
    * @param {Object} props — has a .ball property that says if in the frame,
    *  it's the first or second ball, .showSelector property that let's us know
-   *  what frame we're currently on, a score array, and the total
+   *  what frame we're currently on, a scores array, and the total
    */
   constructor(props) {
     super(props);
     this.state = {
       selector: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
       pinsLeft: 10,
-      score: [null, null],
+      scores: [null, null],
     };
     this.showScore = this.showScore.bind(this);
   }
 
   showScore(selected) {
-    const {pinsLeft, score} = this.state;
+    const {pinsLeft, scores} = this.state;
     pinsLeft =- selected;
     const {ball} = this.props;
     const rules = {
@@ -29,16 +29,16 @@ class Frame extends Component {
       spare: "/",
     }
     if (pinsLeft === 0 && ball === 1) {
-      score[0] = rules[strike];
+      scores[0] = rules[strike];
     } else if (pinsLeft === 0) {
-      score[1] = rules[spare];
+      scores[1] = rules[spare];
     }
-    this.setState({ pinsLeft, score })
+    this.setState({ pinsLeft, scores })
   }
 
   render() {
     const {ball, showSelector, total, current} = this.props;
-    const {selector, pinsLeft, score} = this.state;
+    const {selector, pinsLeft, scores} = this.state;
     const options = selector.slice(0, pinsLeft);
     return (
       <div className="table-container">
@@ -57,12 +57,20 @@ class Frame extends Component {
             </tr>
             <tr>
               <th></th>
-              <td>{score[0]}</td>
-              <td>{score[1]}</td>
+              <td>{scores[0]}</td>
+              <td>{scores[1]}</td>
             </tr>
-            {/* Input score */}
+            {/* Input scores */}
             {/* We need to render this dynamically so that the drop down appears where it needs to be */}
-            {(showSelector) ? <Selector options={options} select={this.showScore} /> : null}
+            {(showSelector) ?
+              <tr>
+                <th>Knocked over</th>
+                {scores.map((score, index) => {
+                  var select = (index + 1 === ball) ? true : false;
+                  return <Selector key={`${score}${index}`} options={options} ball={index + 1} select={select}/>;
+                })}
+              </tr> : null
+            }
             <tr>
               <td>{total}</td>
             </tr>
