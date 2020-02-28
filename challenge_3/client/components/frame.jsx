@@ -37,7 +37,8 @@ class Frame extends Component {
   }
 
   render() {
-    const {ball, showSelector, total, current} = this.props;
+    const {ball, showSelector, total, current, handleSelect} = this.props;
+    console.log(handleSelect);
     const {selector, pinsLeft, scores} = this.state;
     const options = selector.slice(0, pinsLeft);
     return (
@@ -67,7 +68,7 @@ class Frame extends Component {
                 <th>Knocked over</th>
                 {scores.map((score, index) => {
                   var select = (index + 1 === ball) ? true : false;
-                  return <Selector key={`${score}${index}`} options={options} ball={index + 1} select={select}/>;
+                  return <Selector key={`${score}${index}`} options={options} ball={index + 1} select={select} handleSelect={handleSelect} />;
                 })}
               </tr> : null
             }
