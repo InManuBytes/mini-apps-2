@@ -23,6 +23,7 @@ const Layout = ({children}) => {
         <div className="hero-body">
           <div className="container has-text-centered">
             {/* content */}
+            {children}
           </div>
         </div>
         {/* footer */}
