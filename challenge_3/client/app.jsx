@@ -2,6 +2,7 @@
 import React, {Component} from 'react';
 import Layout from './layout';
 import Frame from './components/frame';
+import Scores from './components/scores';
 
 class App extends Component {
   constructor(props) {
@@ -22,7 +23,9 @@ class App extends Component {
       lastCalculatedScore: 0,
       currentFrame: 1,
       ball: 1,
+      pinsLeft: 10,
       turnsToCalculateScore: 2,
+      ready: false,
     };
     this.calculateFrameTotal = this.calculateFrameTotal.bind(this);
     this.readyToCalculateScore = this.readyToCalculateScore.bind(this);
@@ -41,19 +44,46 @@ class App extends Component {
   }
   // whenever we update the score on a select we want to check if we can calculate the score
   readyToCalculateScore(knockedPins) {
-    console.log('ready');
-    if (knockedPins === 10) {
-      // we need to make sure we don't calculate until three more turns
+    const {turnsToCalculateScore, currentFrame, frames, ball, pinsLeft} = this.state;
+    // TODO if the turns to calculate score is 0, calculate
+    var newFrame = frames[currentFrame];
+    newFrame[ball - 1] = knockedPins;
+    var newPinsLeft;
+    // update only the current frame
+    const newFrames = {
+      ...frames,
+      [currentFrame]: newFrame
     }
+    var newTurns = turnsToCalculateScore;
+    var newFrame = currentFrame;
+    var currentBall = ball;
+    if (knockedPins !== 10 && ball === 1) {
+      // we need to make sure we don't calculate until next turn
+      newTurns--;
+      currentBall++;
+      newPinsLeft = pinsLeft - knockedPins;
+    } else {
+      if (knockedPins !== 10 && ball === 2) {
+
+      }
+      currentBall = 1;
+      newFrame++;
+      newTurns++;
+    }
+    this.setState({frames: newFrames, turnsToCalculateScore: newTurns, currentFrame: newFrame, ball: currentBall, pinsLeft: newPinsLeft})
+
   }
 
   render() {
-    const {frames, currentFrame, ball} = this.state;
-    const score = frames[currentFrame];
+    const {frames, currentFrame, ball, pinsLeft} = this.state;
+    const scores = frames[currentFrame];
+    console.log(this.state);
     return (
       <Layout>
         {/* We want to try to calculate a score everytime we're ready to do so*/}
-        <Frame current={currentFrame} score={score} total={null} ball={ball} showSelector={true} ready={this.readyToCalculateScore} handleSelect={this.readyToCalculateScore} />
+        {/* TODO render frames dynamically up to currentFrame */}
+        <Scores frames={frames} />
+        <Frame scores={scores} current={currentFrame} ball={ball} showSelector={true} handleSelect={this.readyToCalculateScore} pinsLeft={pinsLeft} />
       </Layout>
     );
   }
