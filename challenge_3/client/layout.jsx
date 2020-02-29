@@ -21,7 +21,7 @@ const Layout = ({children}) => {
         </nav>
         {/* body */}
         <div className="hero-body">
-          <div className="container has-text-centered">
+          <div className="container is-fluid">
             {/* content */}
             {children}
           </div>
