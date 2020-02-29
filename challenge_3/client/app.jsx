@@ -66,7 +66,10 @@ class App extends Component {
       if (knockedPins !== 10 && ball === 2) {
 
       }
+      // reset values
       currentBall = 1;
+      newPinsLeft = 10;
+      // go to next frame and add right turns
       newFrame++;
       newTurns++;
     }
