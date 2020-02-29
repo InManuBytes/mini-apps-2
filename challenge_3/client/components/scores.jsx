@@ -6,13 +6,11 @@ class Scores extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      totals: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
   }
 
   render() {
-    const {frames} = this.props;
-    const {totals} = this.state;
+    const {frames, totals} = this.props;
     return (
       <div className="tile is-ancestor">
         {_.map(frames, (scores, frame) => {
