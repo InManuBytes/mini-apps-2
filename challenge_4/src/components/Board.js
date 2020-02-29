@@ -2,10 +2,21 @@ import React from 'react';
 import _ from 'lodash';
 
 const Board = ({board}) => {
-  const newBoard = makeNewBoard(10); // start with 10
+  const newBoard = board ? board: makeNewBoard(10); // start with 10
   console.log(newBoard);
   return (
     <table className="board">
+      {newBoard.map((row, rowIdx) => {
+        return (
+          <tr key={rowIdx}>
+            {row.map((square, colIdx) => {
+              return (
+                <td key={colIdx}>{square}</td>
+              );
+            })}
+          </tr>
+        );
+      })}
     </table>
   );
 }
