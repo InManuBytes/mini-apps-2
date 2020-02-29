@@ -14,53 +14,23 @@ class Frame extends Component {
     super(props);
     this.state = {
       selector: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      pinsLeft: 10,
-      scores: [null, null],
     };
-    this.showScore = this.showScore.bind(this);
-  }
-
-  showScore(selected) {
-    const {pinsLeft, scores} = this.state;
-    pinsLeft =- selected;
-    const {ball} = this.props;
-    const rules = {
-      strike: "X",
-      spare: "/",
-    }
-    if (pinsLeft === 0 && ball === 1) {
-      scores[0] = rules[strike];
-    } else if (pinsLeft === 0) {
-      scores[1] = rules[spare];
-    }
-    this.setState({ pinsLeft, scores })
   }
 
   render() {
-    const {ball, showSelector, total, current, handleSelect} = this.props;
-    console.log(handleSelect);
-    const {selector, pinsLeft, scores} = this.state;
+    const {ball, showSelector, total, current, handleSelect, scores, pinsLeft} = this.props;
+    const {selector} = this.state;
     const options = selector.slice(0, pinsLeft);
     return (
-      <div className="table-container">
+      <div className="card">
+        <header className="card-header">
+          <p className="card-header-title">
+            Frame {current}
+          </p>
+        </header>
         <table className="table is-bordered">
-          {/* header */}
-          <thead>
-            <tr>
-              <th>
-                Frame {current}
-              </th>
-            </tr>
-          </thead>
           {/* scores */}
           <tbody>
-            <tr>
-            </tr>
-            <tr>
-              <th></th>
-              <td>{scores[0]}</td>
-              <td>{scores[1]}</td>
-            </tr>
             {/* Input scores */}
             {/* We need to render this dynamically so that the drop down appears where it needs to be */}
             {(showSelector) ?
@@ -70,7 +40,16 @@ class Frame extends Component {
                   var select = (index + 1 === ball) ? true : false;
                   return <Selector key={`${score}${index}`} options={options} ball={index + 1} select={select} handleSelect={handleSelect} />;
                 })}
-              </tr> : null
+              </tr> :
+              <tr>
+                <th></th>
+                {/* TODO show scores with X and / */}
+                <td>{scores[0]}</td>
+                <td>{scores[1]}</td>
+                {(current === '10') ?
+                  <td>0</td> : null
+                }
+              </tr>
             }
             <tr>
               <td>{total}</td>
